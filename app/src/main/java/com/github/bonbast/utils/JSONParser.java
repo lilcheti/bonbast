@@ -70,6 +70,23 @@ public class JSONParser {
           jsonData.getJSONObject("price_afn").put("p", bonbast.getJSONObject("Afghan Afghani").getString("sell") + "0");
           jsonData.getJSONObject("price_iqd").put("p", bonbast.getJSONObject("Iraqi Dinar").getString("sell") + "0");
 
+          jsonData.getJSONObject("price_dollar_soleymani").put("l", bonbast.getJSONObject("US Dollar").getString("buy") + "0");
+          jsonData.getJSONObject("price_eur").put("l", bonbast.getJSONObject("Euro").getString("buy") + "0");
+          jsonData.getJSONObject("price_gbp").put("l", bonbast.getJSONObject("British Pound").getString("buy") + "0");
+          jsonData.getJSONObject("price_chf").put("l", bonbast.getJSONObject("Swiss Franc").getString("buy") + "0");
+          jsonData.getJSONObject("price_cad").put("l", bonbast.getJSONObject("Canadian Dollar").getString("buy") + "0");
+          jsonData.getJSONObject("price_aud").put("l", bonbast.getJSONObject("Australian Dollar").getString("buy") + "0");
+          jsonData.getJSONObject("price_sek").put("l", bonbast.getJSONObject("Swedish Krona").getString("buy") + "0");
+          jsonData.getJSONObject("price_rub").put("l", bonbast.getJSONObject("Russian Ruble").getString("buy") + "0");
+          jsonData.getJSONObject("price_sgd").put("l", bonbast.getJSONObject("Singapore Dollar").getString("buy") + "0");
+          jsonData.getJSONObject("price_aed").put("l", bonbast.getJSONObject("UAE Dirham").getString("buy") + "0");
+          jsonData.getJSONObject("price_jpy").put("l", bonbast.getJSONObject("Japanese Yen").getString("buy") + "0");
+          jsonData.getJSONObject("price_try").put("l", bonbast.getJSONObject("Turkish Lira").getString("buy") + "0");
+          jsonData.getJSONObject("price_cny").put("l", bonbast.getJSONObject("Chinese Yuan").getString("buy") + "0");
+          jsonData.getJSONObject("price_inr").put("l", bonbast.getJSONObject("Indian Rupee").getString("buy") + "0");
+          jsonData.getJSONObject("price_myr").put("l", bonbast.getJSONObject("Ringgit").getString("buy") + "0");
+          jsonData.getJSONObject("price_afn").put("l", bonbast.getJSONObject("Afghan Afghani").getString("buy") + "0");
+          jsonData.getJSONObject("price_iqd").put("l", bonbast.getJSONObject("Iraqi Dinar").getString("buy") + "0");
 
         jsonData.getJSONObject("sekeb").put("p",bonbast.getJSONObject("Azadi").getString("sell")+"0");
         jsonData.getJSONObject("sekee").put("p",bonbast.getJSONObject("Emami").getString("sell")+"0");
@@ -193,8 +210,8 @@ public class JSONParser {
     PriceModel priceModel = null;
     try {
       String price = object.getString("p");
-      String priceHigh = object.getString("h");
-      String priceLow = object.getString("h");
+      String priceHigh = object.getString("p");
+      String priceLow = object.getString("l");
       String priceChange = object.getString("d");
 
       // Change price if toman is selected in settings

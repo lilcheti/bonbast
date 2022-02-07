@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
   public void getData() {
     AndroidNetworking
-            .get("https://cdn.jsdelivr.net/gh/tokhmiX/bonbast@master/price.json")
+            .get("https://raw.githubusercontent.com/tokhmiX/bonbast/master/price.json")
             .setPriority(Priority.HIGH)
             .doNotCacheResponse()
             .build()

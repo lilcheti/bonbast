@@ -16,8 +16,8 @@
   -->
 
 <resources>
-    <string name="app_name">Sarrafi</string>
-    <string name="app_name_fa">صرافی</string>
+    <string name="app_name">BonBast</string>
+    <string name="app_name_fa">بن بست</string>
     <string name="add">افزودن</string>
     <string name="title">موضوع</string>
     <string name="detail">توضیحات</string>
@@ -53,6 +53,8 @@
     <string name="price_change">تغییرات قیمت</string>
     <string name="price_low">پایین‌ترین قیمت روز</string>
     <string name="price_high">بالاترین قیمت روز</string>
+    <string name="price_buy">قیمت خرید</string>
+    <string name="price_sell">قیمت فروش</string>
     <string name="last_update">آخرین به‌روز‌رسانی</string>
 
     <string name="choose_filter">نوع دسته بندی را انتخاب کنید</string>
