@@ -73,7 +73,8 @@ public class OilListFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     try {
       JSONObject response = new JSONObject(DatabaseManager.getInstance().getRawData());
-      list.addAll(JSONParser.priceList(response, "oil", getContext()));
+      JSONObject bonbast = new JSONObject(DatabaseManager.getInstance().getBonbastData());
+      list.addAll(JSONParser.priceList(response,bonbast, "oil", getContext()));
       recycler_view.setAdapter(adapter);
     } catch (JSONException e) {
       e.printStackTrace();

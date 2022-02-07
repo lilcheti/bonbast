@@ -175,6 +175,44 @@ public class MainTabActivity extends AppCompatActivity {
               @Override
               public void onResponse(JSONObject response) {
                 DatabaseManager.getInstance().setBonbastData(response.toString());
+                AndroidNetworking
+                        .get(mainUrl)
+                        .setPriority(Priority.HIGH)
+                        .doNotCacheResponse()
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                          @Override
+                          public void onResponse(JSONObject response) {
+                            status_layout.setVisibility(View.GONE);
+
+                            DatabaseManager.getInstance().setRawData(response.toString());
+
+                            PricePagerAdapter pricePagerAdapter = new PricePagerAdapter(getBaseContext(), getSupportFragmentManager());
+                            pricePagerAdapter.addFragment(new FavoriteListFragment());
+                            pricePagerAdapter.addFragment(new CurrencyListFragment());
+                            pricePagerAdapter.addFragment(new GoldListFragment());
+                            pricePagerAdapter.addFragment(new OilListFragment());
+                            pricePagerAdapter.addFragment(new DigitalCurrencyListFragment());
+                            viewPager.setAdapter(pricePagerAdapter);
+                            tabs.setupViewPager(viewPager);
+                            if (!DatabaseManager.getInstance().isFavoriteListAvailable())
+                              viewPager.setCurrentItem(1);
+                            tabs.setVisibility(View.VISIBLE);
+                            viewPager.setVisibility(View.VISIBLE);
+
+                            if (response.toString().equals("")) {
+                              status_layout.setVisibility(View.VISIBLE);
+                              status_animation.setAnimation("empty_box.json");
+                              status_animation.playAnimation();
+                              status_text.setText(getResources().getString(R.string.empty_list));
+                            }
+                          }
+                          @Override
+                          public void onError(ANError error) {
+                            Log.e("🔴ERROR" , String.valueOf(error));
+                            showProblem(getResources().getString(R.string.error_loading));
+                          }
+                        });
               }
 
               @Override
@@ -183,44 +221,7 @@ public class MainTabActivity extends AppCompatActivity {
                 showProblem(getResources().getString(R.string.error_loading));
               }
             });
-    AndroidNetworking
-            .get(mainUrl)
-            .setPriority(Priority.HIGH)
-            .doNotCacheResponse()
-            .build()
-            .getAsJSONObject(new JSONObjectRequestListener() {
-              @Override
-              public void onResponse(JSONObject response) {
-                status_layout.setVisibility(View.GONE);
 
-                DatabaseManager.getInstance().setRawData(response.toString());
-
-                PricePagerAdapter pricePagerAdapter = new PricePagerAdapter(getBaseContext(), getSupportFragmentManager());
-                pricePagerAdapter.addFragment(new FavoriteListFragment());
-                pricePagerAdapter.addFragment(new CurrencyListFragment());
-                pricePagerAdapter.addFragment(new GoldListFragment());
-                pricePagerAdapter.addFragment(new OilListFragment());
-                pricePagerAdapter.addFragment(new DigitalCurrencyListFragment());
-                viewPager.setAdapter(pricePagerAdapter);
-                tabs.setupViewPager(viewPager);
-                if (!DatabaseManager.getInstance().isFavoriteListAvailable())
-                  viewPager.setCurrentItem(1);
-                tabs.setVisibility(View.VISIBLE);
-                viewPager.setVisibility(View.VISIBLE);
-
-                if (response.toString().equals("")) {
-                  status_layout.setVisibility(View.VISIBLE);
-                  status_animation.setAnimation("empty_box.json");
-                  status_animation.playAnimation();
-                  status_text.setText(getResources().getString(R.string.empty_list));
-                }
-              }
-              @Override
-              public void onError(ANError error) {
-                Log.e("🔴ERROR" , String.valueOf(error));
-                showProblem(getResources().getString(R.string.error_loading));
-              }
-            });
   }
 
   public void showProblem(String error) {

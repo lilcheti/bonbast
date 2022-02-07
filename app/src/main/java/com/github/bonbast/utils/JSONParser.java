@@ -42,19 +42,49 @@ import java.util.List;
 import java.util.Locale;
 
 public class JSONParser {
-  public static ArrayList<PriceModel> priceList(JSONObject response, String checkedFilter, Context context) throws JSONException {
+  public static ArrayList<PriceModel> priceList(JSONObject response,JSONObject bonbast, String checkedFilter, Context context) throws JSONException {
     ArrayList<PriceModel> list = new ArrayList<>();
 
     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
     boolean tomanConvert = true;
     String iran_currency = tomanConvert ? "تومان" : "ریال";
-    //JSONObject bonbast = new JSONObject(DatabaseManager.getInstance().getBonbastData());
-
     JSONObject jsonData = response.optJSONObject("current");
-
-    //jsonData.getJSONObject("price_dollar_rl").put("p",bonbast.getJSONObject("US Dollar").getString("sell"));
-
     if (jsonData != null) {
+      if(bonbast!=null) {
+        try {
+          jsonData.getJSONObject("price_dollar_soleymani").put("p", bonbast.getJSONObject("US Dollar").getString("sell") + "0");
+          jsonData.getJSONObject("price_eur").put("p", bonbast.getJSONObject("Euro").getString("sell") + "0");
+          jsonData.getJSONObject("price_gbp").put("p", bonbast.getJSONObject("British Pound").getString("sell") + "0");
+          jsonData.getJSONObject("price_chf").put("p", bonbast.getJSONObject("Swiss Franc").getString("sell") + "0");
+          jsonData.getJSONObject("price_cad").put("p", bonbast.getJSONObject("Canadian Dollar").getString("sell") + "0");
+          jsonData.getJSONObject("price_aud").put("p", bonbast.getJSONObject("Australian Dollar").getString("sell") + "0");
+          jsonData.getJSONObject("price_sek").put("p", bonbast.getJSONObject("Swedish Krona").getString("sell") + "0");
+          jsonData.getJSONObject("price_rub").put("p", bonbast.getJSONObject("Russian Ruble").getString("sell") + "0");
+          jsonData.getJSONObject("price_sgd").put("p", bonbast.getJSONObject("Singapore Dollar").getString("sell") + "0");
+          jsonData.getJSONObject("price_aed").put("p", bonbast.getJSONObject("UAE Dirham").getString("sell") + "0");
+          jsonData.getJSONObject("price_jpy").put("p", bonbast.getJSONObject("Japanese Yen").getString("sell") + "0");
+          jsonData.getJSONObject("price_try").put("p", bonbast.getJSONObject("Turkish Lira").getString("sell") + "0");
+          jsonData.getJSONObject("price_cny").put("p", bonbast.getJSONObject("Chinese Yuan").getString("sell") + "0");
+          jsonData.getJSONObject("price_inr").put("p", bonbast.getJSONObject("Indian Rupee").getString("sell") + "0");
+          jsonData.getJSONObject("price_myr").put("p", bonbast.getJSONObject("Ringgit").getString("sell") + "0");
+          jsonData.getJSONObject("price_afn").put("p", bonbast.getJSONObject("Afghan Afghani").getString("sell") + "0");
+          jsonData.getJSONObject("price_iqd").put("p", bonbast.getJSONObject("Iraqi Dinar").getString("sell") + "0");
+
+
+        jsonData.getJSONObject("sekeb").put("p",bonbast.getJSONObject("Azadi").getString("sell")+"0");
+        jsonData.getJSONObject("sekee").put("p",bonbast.getJSONObject("Emami").getString("sell")+"0");
+        jsonData.getJSONObject("nim").put("p",bonbast.getJSONObject("\u00bd Azadi").getString("sell")+"0");
+        jsonData.getJSONObject("rob").put("p",bonbast.getJSONObject("\u00bc Azadi").getString("sell")+"0");
+        jsonData.getJSONObject("gerami").put("p",bonbast.getJSONObject("Gerami").getString("sell")+"0");
+        jsonData.getJSONObject("mesghal").put("p",bonbast.getJSONObject("Gold Mithqal").getString("sell")+"0");
+        jsonData.getJSONObject("ons").put("p",bonbast.getJSONObject("Gold Ounce").getString("sell"));
+
+
+        jsonData.getJSONObject("crypto-bitcoin").put("p",bonbast.getJSONObject("Bitcoin").getString("sell"));
+        }catch (Exception e){
+          Log.e("fuck",e.toString());
+        }
+      }
       JSONObject price_dollar_rl = jsonData.getJSONObject("price_dollar_rl");
       JSONObject price_eur              = jsonData.getJSONObject("price_eur");
       JSONObject price_dollar_soleymani = jsonData.getJSONObject("price_dollar_soleymani");
@@ -102,8 +132,8 @@ public class JSONParser {
       JSONObject crypto_stellar = jsonData.getJSONObject("crypto-stellar");
 
       if (checkedFilter.equals("currency") || checkedFilter.equals("")) {
-        list.add(addObject("price_dollar_rl",context.getResources().getString(R.string.dollar), price_dollar_rl, iran_currency, false ));
-        list.add(addObject("price_dollar_soleymani",context.getResources().getString(R.string.dollar_soleymani), price_dollar_soleymani, iran_currency, tomanConvert ));
+        list.add(addObject("price_dollar_rl",context.getResources().getString(R.string.dollar), price_dollar_rl, iran_currency, tomanConvert ));
+        list.add(addObject("price_dollar_soleymani",context.getResources().getString(R.string.dollar_bonbast), price_dollar_soleymani, iran_currency, tomanConvert ));
         list.add(addObject("price_eur",context.getResources().getString(R.string.euro), price_eur, iran_currency, tomanConvert ));
         list.add(addObject("price_cad",context.getResources().getString(R.string.dollar_canada), price_cad, iran_currency, tomanConvert ));
         list.add(addObject("price_aud",context.getResources().getString(R.string.dollar_australia), price_aud, iran_currency, tomanConvert ));
@@ -321,10 +351,45 @@ public class JSONParser {
     return model;
   }
 
-  public static ArrayList<UnitItem> priceConverterList(JSONObject response, Context context) throws JSONException {
+  public static ArrayList<UnitItem> priceConverterList(JSONObject response,JSONObject bonbast, Context context) throws JSONException {
     ArrayList<UnitItem> unitItems = new ArrayList<>();
     JSONObject jsonData = response.optJSONObject("current");
     if (jsonData != null) {
+      if(bonbast!=null) {
+        try {
+          jsonData.getJSONObject("price_dollar_soleymani").put("p", bonbast.getJSONObject("US Dollar").getString("sell") + "0");
+          jsonData.getJSONObject("price_eur").put("p", bonbast.getJSONObject("Euro").getString("sell") + "0");
+          jsonData.getJSONObject("price_gbp").put("p", bonbast.getJSONObject("British Pound").getString("sell") + "0");
+          jsonData.getJSONObject("price_chf").put("p", bonbast.getJSONObject("Swiss Franc").getString("sell") + "0");
+          jsonData.getJSONObject("price_cad").put("p", bonbast.getJSONObject("Canadian Dollar").getString("sell") + "0");
+          jsonData.getJSONObject("price_aud").put("p", bonbast.getJSONObject("Australian Dollar").getString("sell") + "0");
+          jsonData.getJSONObject("price_sek").put("p", bonbast.getJSONObject("Swedish Krona").getString("sell") + "0");
+          jsonData.getJSONObject("price_rub").put("p", bonbast.getJSONObject("Russian Ruble").getString("sell") + "0");
+          jsonData.getJSONObject("price_sgd").put("p", bonbast.getJSONObject("Singapore Dollar").getString("sell") + "0");
+          jsonData.getJSONObject("price_aed").put("p", bonbast.getJSONObject("UAE Dirham").getString("sell") + "0");
+          jsonData.getJSONObject("price_jpy").put("p", bonbast.getJSONObject("Japanese Yen").getString("sell") + "0");
+          jsonData.getJSONObject("price_try").put("p", bonbast.getJSONObject("Turkish Lira").getString("sell") + "0");
+          jsonData.getJSONObject("price_cny").put("p", bonbast.getJSONObject("Chinese Yuan").getString("sell") + "0");
+          jsonData.getJSONObject("price_inr").put("p", bonbast.getJSONObject("Indian Rupee").getString("sell") + "0");
+          jsonData.getJSONObject("price_myr").put("p", bonbast.getJSONObject("Ringgit").getString("sell") + "0");
+          jsonData.getJSONObject("price_afn").put("p", bonbast.getJSONObject("Afghan Afghani").getString("sell") + "0");
+          jsonData.getJSONObject("price_iqd").put("p", bonbast.getJSONObject("Iraqi Dinar").getString("sell") + "0");
+
+
+          jsonData.getJSONObject("sekeb").put("p",bonbast.getJSONObject("Azadi").getString("sell")+"0");
+          jsonData.getJSONObject("sekee").put("p",bonbast.getJSONObject("Emami").getString("sell")+"0");
+          jsonData.getJSONObject("nim").put("p",bonbast.getJSONObject("\u00bd Azadi").getString("sell")+"0");
+          jsonData.getJSONObject("rob").put("p",bonbast.getJSONObject("\u00bc Azadi").getString("sell")+"0");
+          jsonData.getJSONObject("gerami").put("p",bonbast.getJSONObject("Gerami").getString("sell")+"0");
+          jsonData.getJSONObject("mesghal").put("p",bonbast.getJSONObject("Gold Mithqal").getString("sell")+"0");
+          jsonData.getJSONObject("ons").put("p",bonbast.getJSONObject("Gold Ounce").getString("sell"));
+
+
+          jsonData.getJSONObject("crypto-bitcoin").put("p",bonbast.getJSONObject("Bitcoin").getString("sell"));
+        }catch (Exception e){
+          Log.e("fuck",e.toString());
+        }
+      }
       double rial = 1.0;
       double dollar = Double.parseDouble(jsonData.getJSONObject("price_dollar_rl").getString("p").replace(",", ""));
       double dollar_soleymani = Double.parseDouble(jsonData.getJSONObject("price_dollar_soleymani").getString("p").replace(",", ""));
@@ -348,7 +413,7 @@ public class JSONParser {
 
       unitItems.add(new UnitItem(context.getResources().getString(R.string.rial), R.drawable.flag_ir, rial));
       unitItems.add(new UnitItem(context.getResources().getString(R.string.dollar), R.drawable.flag_us, dollar));
-      unitItems.add(new UnitItem(context.getResources().getString(R.string.dollar_soleymani), R.drawable.flag_us, dollar_soleymani));
+      unitItems.add(new UnitItem(context.getResources().getString(R.string.dollar_bonbast), R.drawable.flag_us, dollar_soleymani));
       unitItems.add(new UnitItem(context.getResources().getString(R.string.euro), R.drawable.flag_eu, euro));
       unitItems.add(new UnitItem(context.getResources().getString(R.string.dollar_canada), R.drawable.flag_ca, dollar_canada));
       unitItems.add(new UnitItem(context.getResources().getString(R.string.dollar_australia), R.drawable.flag_au, dollar_australia));

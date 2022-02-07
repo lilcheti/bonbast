@@ -41,6 +41,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.github.bonbast.db.DatabaseManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.ChipGroup;
 
@@ -198,41 +199,59 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
   public void getData() {
     AndroidNetworking
-            .get(mainUrl)
+            .get("https://raw.githubusercontent.com/tokhmiX/bonbast/master/price.json")
             .setPriority(Priority.HIGH)
             .doNotCacheResponse()
             .build()
             .getAsJSONObject(new JSONObjectRequestListener() {
               @Override
               public void onResponse(JSONObject response) {
-                status_layout.setVisibility(View.GONE);
-                try {
-                  recyclerViewState = Objects.requireNonNull(recycler_view.getLayoutManager()).onSaveInstanceState();
-                  list.clear();
-                  list.addAll(JSONParser.priceList(response, checkedFilter, getBaseContext()));
+                DatabaseManager.getInstance().setBonbastData(response.toString());
+                AndroidNetworking
+                        .get(mainUrl)
+                        .setPriority(Priority.HIGH)
+                        .doNotCacheResponse()
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                          @Override
+                          public void onResponse(JSONObject response) {
+                            status_layout.setVisibility(View.GONE);
+                            try {
+                              recyclerViewState = Objects.requireNonNull(recycler_view.getLayoutManager()).onSaveInstanceState();
+                              list.clear();
+                              list.addAll(JSONParser.priceList(response,null, checkedFilter, getBaseContext()));
 
-                } catch (JSONException e) {
-                  showProblem(getResources().getString(R.string.error_parsing));
-                }
+                            } catch (JSONException e) {
+                              showProblem(getResources().getString(R.string.error_parsing));
+                            }
 
-                recycler_view.setAdapter(adapter);
-                swipeRefreshLayout.setRefreshing(false);
-                // Restore recyclerview state
-                Objects.requireNonNull(recycler_view.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
+                            recycler_view.setAdapter(adapter);
+                            swipeRefreshLayout.setRefreshing(false);
+                            // Restore recyclerview state
+                            Objects.requireNonNull(recycler_view.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
 
-                if (list.isEmpty()) {
-                  status_layout.setVisibility(View.VISIBLE);
-                  status_animation.setAnimation("empty_box.json");
-                  status_animation.playAnimation();
-                  status_text.setText(getResources().getString(R.string.empty_list));
-                }
+                            if (list.isEmpty()) {
+                              status_layout.setVisibility(View.VISIBLE);
+                              status_animation.setAnimation("empty_box.json");
+                              status_animation.playAnimation();
+                              status_text.setText(getResources().getString(R.string.empty_list));
+                            }
+                          }
+                          @Override
+                          public void onError(ANError error) {
+                            Log.e("🔴ERROR" , String.valueOf(error));
+                            showProblem(getResources().getString(R.string.error_loading));
+                          }
+                        });
               }
+
               @Override
               public void onError(ANError error) {
                 Log.e("🔴ERROR" , String.valueOf(error));
                 showProblem(getResources().getString(R.string.error_loading));
               }
             });
+
   }
 
   public void showProblem(String error) {

@@ -73,7 +73,12 @@ public class CurrencyListFragment extends Fragment implements SwipeRefreshLayout
 
     try {
       JSONObject response = new JSONObject(DatabaseManager.getInstance().getRawData());
-      list.addAll(JSONParser.priceList(response, "currency", getContext()));
+      if (DatabaseManager.getInstance().getBonbastData()!=null){
+      JSONObject bonbast = new JSONObject(DatabaseManager.getInstance().getBonbastData());
+      list.addAll(JSONParser.priceList(response,bonbast, "currency", getContext()));
+      }else{
+        list.addAll(JSONParser.priceList(response,null, "currency", getContext()));
+      }
       recycler_view.setAdapter(adapter);
     } catch (JSONException e) {
       e.printStackTrace();

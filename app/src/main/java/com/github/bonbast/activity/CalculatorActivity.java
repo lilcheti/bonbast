@@ -42,6 +42,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.github.bonbast.db.DatabaseManager;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.github.bonbast.R;
 import com.github.bonbast.adapter.UnitAdapter;
@@ -55,6 +56,7 @@ import org.json.JSONObject;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -202,33 +204,50 @@ public class CalculatorActivity extends AppCompatActivity {
 
   public void getData() {
     AndroidNetworking
-            .get(mainUrl)
+            .get("https://raw.githubusercontent.com/tokhmiX/bonbast/master/price.json")
             .setPriority(Priority.HIGH)
             .doNotCacheResponse()
             .build()
             .getAsJSONObject(new JSONObjectRequestListener() {
               @Override
-              public void onResponse(JSONObject response) {
-                status_layout.setVisibility(View.GONE);
-                try {
-                  unitItems.clear();
-                  unitItems.addAll(JSONParser.priceConverterList(response, getBaseContext()));
+              public void onResponse(JSONObject bonbast) {
+                AndroidNetworking
+                        .get(mainUrl)
+                        .setPriority(Priority.HIGH)
+                        .doNotCacheResponse()
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                          @Override
+                          public void onResponse(JSONObject response) {
+                            status_layout.setVisibility(View.GONE);
+                            try {
+                              unitItems.clear();
+                              unitItems.addAll(JSONParser.priceConverterList(response,bonbast, getBaseContext()));
 
-                  spinnerFirst.setAdapter(unitAdapter);
-                  spinnerSecond.setAdapter(unitAdapter);
-                  spinnerSecond.setSelection(1);
-                  detail_scrollview.setVisibility(View.VISIBLE);
-                } catch (JSONException e) {
-                  showProblem(getResources().getString(R.string.error_parsing));
-                }
+                              spinnerFirst.setAdapter(unitAdapter);
+                              spinnerSecond.setAdapter(unitAdapter);
+                              spinnerSecond.setSelection(1);
+                              detail_scrollview.setVisibility(View.VISIBLE);
+                            } catch (JSONException e) {
+                              showProblem(getResources().getString(R.string.error_parsing));
+                            }
 
+                          }
+                          @Override
+                          public void onError(ANError error) {
+                            Log.e("🔴ERROR" , String.valueOf(error));
+                            showProblem(getResources().getString(R.string.error_loading));
+                          }
+                        });
               }
+
               @Override
               public void onError(ANError error) {
                 Log.e("🔴ERROR" , String.valueOf(error));
                 showProblem(getResources().getString(R.string.error_loading));
               }
             });
+
   }
 
   private void calculate() {
