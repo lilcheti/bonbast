@@ -62,7 +62,7 @@ Feel free to Fork, edit, then pull!
 
 ## Download ⬇️
 
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Google play download"  height="80">](https://play.google.com/store/apps/details?id=com.shalchian.sarrafi)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Google play download"  height="80">](https://play.google.com/store/apps/details?id=com.github.bonbast)
 [<img src="preview/direct-apk-download.png" alt="Direct apk download"  height="80">](https://github.com/Rminsh/Sarrafi/releases/latest)
 
 

@@ -29,7 +29,7 @@
 -keepclasseswithmembers class **.R$* {
     public static final int define_*;
 }
--keep class com.shalchian.sarrafi.model.** {
+-keep class com.github.bonbast.model.** {
     *;
 }
 

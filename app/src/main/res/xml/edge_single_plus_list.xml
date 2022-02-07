@@ -24,6 +24,6 @@
     category="normal"
     permitVisibilityChanged="true"
     cocktailWidth="550"
-    launchOnClick="com.shalchian.sarrafi.activity.SplashActivity">
+    launchOnClick="com.github.bonbast.activity.SplashActivity">
 
 </cocktail-provider>

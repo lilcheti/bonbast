@@ -26,7 +26,7 @@ android {
     buildToolsVersion '30.0.2'
     flavorDimensions "default"
     defaultConfig {
-        applicationId "com.shalchian.sarrafi"
+        applicationId "com.github.bonbast"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 16
