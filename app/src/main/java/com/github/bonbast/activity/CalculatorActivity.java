@@ -84,7 +84,7 @@ public class CalculatorActivity extends AppCompatActivity {
   Drawable animationDrawable;
   Double firstValue;
   Double secondValue;
-  String mainUrl = "https://call.tgju.org/ajax.json";
+  String mainUrl = "https://call3.tgju.org/ajax.json";
 
   @Override
   protected void attachBaseContext(Context newBase) {

@@ -88,7 +88,7 @@ public class MainTabActivity extends AppCompatActivity {
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
   }
 
-  String mainUrl = "https://call.tgju.org/ajax.json";
+  String mainUrl = "https://call3.tgju.org/ajax.json";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

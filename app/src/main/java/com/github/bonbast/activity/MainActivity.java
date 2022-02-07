@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
   }
 
-  String mainUrl = "https://call.tgju.org/ajax.json";
+  String mainUrl = "https://call3.tgju.org/ajax.json";
   String checkedFilter = "";
 
   @Override
