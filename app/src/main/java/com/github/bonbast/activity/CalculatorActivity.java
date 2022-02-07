@@ -204,7 +204,7 @@ public class CalculatorActivity extends AppCompatActivity {
 
   public void getData() {
     AndroidNetworking
-            .get("https://raw.githubusercontent.com/tokhmiX/bonbast/master/price.json")
+            .get("https://cdn.jsdelivr.net/gh/tokhmiX/bonbast@master/price.json")
             .setPriority(Priority.HIGH)
             .doNotCacheResponse()
             .build()
@@ -235,7 +235,7 @@ public class CalculatorActivity extends AppCompatActivity {
                           }
                           @Override
                           public void onError(ANError error) {
-                            Log.e("🔴ERROR" , String.valueOf(error));
+                            Log.e("🔴ERROR1" , String.valueOf(error));
                             showProblem(getResources().getString(R.string.error_loading));
                           }
                         });
@@ -243,7 +243,7 @@ public class CalculatorActivity extends AppCompatActivity {
 
               @Override
               public void onError(ANError error) {
-                Log.e("🔴ERROR" , String.valueOf(error));
+                Log.e("🔴ERROR1" , String.valueOf(error));
                 showProblem(getResources().getString(R.string.error_loading));
               }
             });

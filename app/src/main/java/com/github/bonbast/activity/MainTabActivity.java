@@ -167,7 +167,7 @@ public class MainTabActivity extends AppCompatActivity {
 
   public void getData() {
     AndroidNetworking
-            .get("https://raw.githubusercontent.com/tokhmiX/bonbast/master/price.json")
+            .get("https://cdn.jsdelivr.net/gh/tokhmiX/bonbast@master/price.json")
             .setPriority(Priority.HIGH)
             .doNotCacheResponse()
             .build()
@@ -209,7 +209,7 @@ public class MainTabActivity extends AppCompatActivity {
                           }
                           @Override
                           public void onError(ANError error) {
-                            Log.e("🔴ERROR" , String.valueOf(error));
+                            Log.e("🔴ERROR3" , String.valueOf(error));
                             showProblem(getResources().getString(R.string.error_loading));
                           }
                         });
@@ -217,7 +217,7 @@ public class MainTabActivity extends AppCompatActivity {
 
               @Override
               public void onError(ANError error) {
-                Log.e("🔴ERROR" , String.valueOf(error));
+                Log.e("🔴ERROR3" , String.valueOf(error));
                 showProblem(getResources().getString(R.string.error_loading));
               }
             });
