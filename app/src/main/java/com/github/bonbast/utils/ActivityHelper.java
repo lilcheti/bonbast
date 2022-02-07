@@ -83,7 +83,7 @@ public class ActivityHelper {
   }
 
   private static void showUpdateDialog(Activity activity) {
-    BottomSheetMaterialDialog mBottomSheetDialog = new BottomSheetMaterialDialog.Builder(activity)
+/*    BottomSheetMaterialDialog mBottomSheetDialog = new BottomSheetMaterialDialog.Builder(activity)
             .setTitle(activity.getResources().getString(R.string.new_update_available))
             .setMessage(activity.getResources().getString(R.string.new_update_available_detail))
             .setAnimation("new_update.json")
@@ -97,12 +97,12 @@ public class ActivityHelper {
             .setNegativeButton(activity.getResources().getString(R.string.download_later), R.drawable.ic_close, (dialogInterface, which) -> dialogInterface.dismiss())
             .build();
 
-    mBottomSheetDialog.show();
+    mBottomSheetDialog.show();*/
   }
 
   public static void checkUpdate(Activity activity,@NonNull Context context) {
 
-    if (BuildConfig.showUpdater) {
+/*    if (BuildConfig.showUpdater) {
       AppUpdaterUtils appUpdaterUtils = new AppUpdaterUtils(context)
               .setGitHubUserAndRepo("Rminsh", "Sarrafi")
               .setUpdateFrom(UpdateFrom.GITHUB)
@@ -123,7 +123,7 @@ public class ActivityHelper {
                 }
               });
       appUpdaterUtils.start();
-    }
+    }*/
   }
 
   public static void rateUS(Activity activity, Context baseContext) {

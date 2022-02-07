@@ -35,6 +35,13 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.github.bonbast.R;
+import com.github.bonbast.db.DatabaseManager;
+import com.github.bonbast.fragment.CurrencyListFragment;
+import com.github.bonbast.fragment.DigitalCurrencyListFragment;
+import com.github.bonbast.fragment.FavoriteListFragment;
+import com.github.bonbast.fragment.GoldListFragment;
+import com.github.bonbast.fragment.OilListFragment;
+import com.github.bonbast.fragment.PricePagerAdapter;
 import com.github.bonbast.model.PriceModel;
 import com.github.bonbast.utils.ActivityHelper;
 import com.github.bonbast.utils.JSONParser;
@@ -108,66 +115,85 @@ public class SymbolWidget extends AppWidgetProvider {
     views.setViewVisibility(R.id.symbol_progress, View.VISIBLE);
     appWidgetManager.updateAppWidget(appWidgetId, views);
     AndroidNetworking
-            .get("https://call.tgju.org/ajax.json")
+            .get("https://raw.githubusercontent.com/tokhmiX/bonbast/master/price.json")
             .setPriority(Priority.HIGH)
             .doNotCacheResponse()
             .build()
             .getAsJSONObject(new JSONObjectRequestListener() {
               @Override
-              public void onResponse(JSONObject response) {
-                try {
-                  SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                  boolean tomanConvert = preferences.getBoolean("toman", false);
-                  String iran_currency = tomanConvert ? "تومان" : "ریال";
+              public void onResponse(JSONObject bonbast) {
+                AndroidNetworking
+                        .get("https://call3.tgju.org/ajax.json")
+                        .setPriority(Priority.HIGH)
+                        .doNotCacheResponse()
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                          @Override
+                          public void onResponse(JSONObject response) {
+                            try {
+                              SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                              boolean tomanConvert = true;
+                              String iran_currency = tomanConvert ? "تومان" : "ریال";
 
-                  JSONObject jsonData = response.optJSONObject("current");
-                  if (jsonData != null) {
-                    JSONObject price_dollar_rl = jsonData.getJSONObject("price_dollar_rl");
-                    PriceModel model = JSONParser.addObject("price_dollar_rl", context.getResources().getString(R.string.dollar), price_dollar_rl, iran_currency, tomanConvert);
+                              JSONObject jsonData = response.optJSONObject("current");
+                              if (jsonData != null) {
+                                if(bonbast!=null) {
+                                  jsonData.getJSONObject("price_dollar_rl").put("p", bonbast.getJSONObject("US Dollar").getString("sell") + "0");
+                                }
+                                JSONObject price_dollar_rl = jsonData.getJSONObject("price_dollar_rl");
+                                PriceModel model = JSONParser.addObject("price_dollar_rl", context.getResources().getString(R.string.dollar), price_dollar_rl, iran_currency, tomanConvert);
 
-                    views.setImageViewBitmap(R.id.symbol_type, WidgetHelper.BuildUpdate(model.getType(), "Shabnam-FD", (int) context.getResources().getDimension(R.dimen.symbol_title), context));
-                    views.setImageViewBitmap(R.id.symbol_price, WidgetHelper.BuildUpdate(model.getPrice(), "Shabnam-Bold-FD", (int) context.getResources().getDimension(R.dimen.symbol_price), context));
-                    views.setImageViewBitmap(R.id.symbol_date, WidgetHelper.BuildUpdate(model.getTime(), "Shabnam-FD", (int) context.getResources().getDimension(R.dimen.symbol_details), context));
-                    views.setImageViewBitmap(R.id.symbol_percent, WidgetHelper.BuildUpdate(model.getPercent_change() + "٪", "Shabnam-FD", (int) context.getResources().getDimension(R.dimen.symbol_details), context));
+                                views.setImageViewBitmap(R.id.symbol_type, WidgetHelper.BuildUpdate(model.getType(), "Shabnam-FD", (int) context.getResources().getDimension(R.dimen.symbol_title), context));
+                                views.setImageViewBitmap(R.id.symbol_price, WidgetHelper.BuildUpdate(model.getPrice(), "Shabnam-Bold-FD", (int) context.getResources().getDimension(R.dimen.symbol_price), context));
+                                views.setImageViewBitmap(R.id.symbol_date, WidgetHelper.BuildUpdate(model.getTime(), "Shabnam-FD", (int) context.getResources().getDimension(R.dimen.symbol_details), context));
+                                views.setImageViewBitmap(R.id.symbol_percent, WidgetHelper.BuildUpdate(model.getPercent_change() + "٪", "Shabnam-FD", (int) context.getResources().getDimension(R.dimen.symbol_details), context));
 
-                    switch (model.getStatus()) {
-                      case "low":
-                        views.setInt(R.id.symbol_layout, "setBackgroundResource",R.drawable.rounded_gradient_purple);
-                        views.setImageViewResource(R.id.symbol_percent_image, R.drawable.ic_down);
-                        break;
-                      case "high":
-                        views.setInt(R.id.symbol_layout, "setBackgroundResource",R.drawable.rounded_gradient_new_leaf);
-                        views.setImageViewResource(R.id.symbol_percent_image, R.drawable.ic_up);
-                        break;
-                      default:
-                        views.setInt(R.id.symbol_layout, "setBackgroundResource",R.drawable.rounded_gradient_ocean_blue);
-                        views.setImageViewResource(R.id.symbol_percent_image, android.R.color.transparent);
-                        break;
-                    }
+                                switch (model.getStatus()) {
+                                  case "low":
+                                    views.setInt(R.id.symbol_layout, "setBackgroundResource",R.drawable.rounded_gradient_purple);
+                                    views.setImageViewResource(R.id.symbol_percent_image, R.drawable.ic_down);
+                                    break;
+                                  case "high":
+                                    views.setInt(R.id.symbol_layout, "setBackgroundResource",R.drawable.rounded_gradient_new_leaf);
+                                    views.setImageViewResource(R.id.symbol_percent_image, R.drawable.ic_up);
+                                    break;
+                                  default:
+                                    views.setInt(R.id.symbol_layout, "setBackgroundResource",R.drawable.rounded_gradient_ocean_blue);
+                                    views.setImageViewResource(R.id.symbol_percent_image, android.R.color.transparent);
+                                    break;
+                                }
 
-                    views.setViewVisibility(R.id.symbol_refresh, View.VISIBLE);
-                    views.setViewVisibility(R.id.symbol_progress, View.GONE);
-                    appWidgetManager.updateAppWidget(appWidgetId, views);
-                    Log.e("✅", "DONE DATA");
-                  }
-                } catch (JSONException e) {
-                  Log.e("🔴🔴 JSONException", String.valueOf(e));
-                  views.setViewVisibility(R.id.symbol_refresh, View.VISIBLE);
-                  views.setImageViewBitmap(R.id.symbol_date, WidgetHelper.BuildUpdate(context.getResources().getString(R.string.error_parsing), "Shabnam-FD", (int) context.getResources().getDimension(R.dimen.symbol_details), context));
-                  views.setViewVisibility(R.id.symbol_progress, View.GONE);
-                  appWidgetManager.updateAppWidget(appWidgetId, views);
-                }
+                                views.setViewVisibility(R.id.symbol_refresh, View.VISIBLE);
+                                views.setViewVisibility(R.id.symbol_progress, View.GONE);
+                                appWidgetManager.updateAppWidget(appWidgetId, views);
+                                Log.e("✅", "DONE DATA");
+                              }
+                            } catch (JSONException e) {
+                              Log.e("🔴🔴 JSONException", String.valueOf(e));
+                              views.setViewVisibility(R.id.symbol_refresh, View.VISIBLE);
+                              views.setImageViewBitmap(R.id.symbol_date, WidgetHelper.BuildUpdate(context.getResources().getString(R.string.error_parsing), "Shabnam-FD", (int) context.getResources().getDimension(R.dimen.symbol_details), context));
+                              views.setViewVisibility(R.id.symbol_progress, View.GONE);
+                              appWidgetManager.updateAppWidget(appWidgetId, views);
+                            }
 
+                          }
+                          @Override
+                          public void onError(ANError error) {
+                            Log.e("🔴ERROR" , String.valueOf(error));
+                            views.setViewVisibility(R.id.symbol_refresh, View.VISIBLE);
+                            views.setImageViewBitmap(R.id.symbol_date, WidgetHelper.BuildUpdate(context.getResources().getString(R.string.error_loading), "Shabnam-FD", (int) context.getResources().getDimension(R.dimen.symbol_details), context));
+                            views.setViewVisibility(R.id.symbol_progress, View.GONE);
+                            appWidgetManager.updateAppWidget(appWidgetId, views);
+                          }
+                        });
               }
               @Override
               public void onError(ANError error) {
-                Log.e("🔴ERROR" , String.valueOf(error));
-                views.setViewVisibility(R.id.symbol_refresh, View.VISIBLE);
-                views.setImageViewBitmap(R.id.symbol_date, WidgetHelper.BuildUpdate(context.getResources().getString(R.string.error_loading), "Shabnam-FD", (int) context.getResources().getDimension(R.dimen.symbol_details), context));
-                views.setViewVisibility(R.id.symbol_progress, View.GONE);
-                appWidgetManager.updateAppWidget(appWidgetId, views);
+                Log.e("🔴ERROR4" , String.valueOf(error));
+                //showProblem(getResources().getString(R.string.error_loading));
               }
             });
+
   }
 }
 

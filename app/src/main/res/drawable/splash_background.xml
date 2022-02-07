@@ -24,7 +24,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/splash_icon"/>
+            android:src="@drawable/bonbast"/>
     </item>
 
 </layer-list>

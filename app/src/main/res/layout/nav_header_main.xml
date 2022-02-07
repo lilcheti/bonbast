@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="50dp"
-        app:srcCompat="@drawable/ic_nav_image"
+        app:srcCompat="@drawable/bonbast2"
         android:contentDescription="@string/app_name_fa" />
 
 </LinearLayout>

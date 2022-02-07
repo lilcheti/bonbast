@@ -29,8 +29,8 @@ android {
         applicationId "com.github.bonbast"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 16
-        versionName "1.1.6"
+        versionCode 1
+        versionName "1.0.0"
         multiDexEnabled true
         android.defaultConfig.vectorDrawables.useSupportLibrary = true
     }

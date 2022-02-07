@@ -104,8 +104,8 @@ public class AboutActivity extends MaterialAboutActivity {
                     .setOnClickAction(() -> {
                       Intent intent = new Intent(Intent.ACTION_SEND);
                       intent.setType("plain/text");
-                      intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"armin536@gmail.com"});
-                      intent.putExtra(Intent.EXTRA_SUBJECT, "نظرات و پیشنهادات (اپ صرافی)");
+                      intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nbanja84@anonaddy.me"});
+                      intent.putExtra(Intent.EXTRA_SUBJECT, "نظرات و پیشنهادات (اپ بن بست)");
                       intent.putExtra(Intent.EXTRA_TEXT, "mail body");
                       startActivity(Intent.createChooser(intent, ""));
                     })
@@ -116,7 +116,7 @@ public class AboutActivity extends MaterialAboutActivity {
     appCardBuilder
             .addItem(new MaterialAboutTitleItem.Builder()
                     .text(R.string.app_name_fa)
-                    .icon(R.mipmap.ic_launcher_round)
+                    .icon(R.mipmap.ic_bonbast_round)
                     .build())
             .addItem(new MaterialAboutActionItem.Builder()
                     .text(getResources().getString(R.string.version))
